@@ -5,8 +5,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
-    const [username, setUsername] = useState("");
+    const [username, setUsername] = useState("");  // username (or email)
     const [password, setPassword] = useState("");
+    const [error, setError] = useState<string | null>(null);
     const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -14,14 +15,14 @@ const LoginPage = () => {
 
         const result = await signIn("credentials", {
             redirect: false,
-            username,
+            username,  // make sure the backend expects this
             password,
         });
 
-        if (result && !result.error) {
-            router.push("/dashboard");
+        if (result?.error) {
+            setError("Invalid credentials");
         } else {
-            alert("Invalid credentials");
+            router.push("/dashboard");
         }
     };
 
@@ -52,12 +53,22 @@ const LoginPage = () => {
                             placeholder="Enter your password"
                         />
                     </div>
+                    {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
                     <button
                         type="submit"
                         className="w-full py-3 px-4 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                         Login
                     </button>
+                    <div className="mt-4">
+                        <button
+                            type="button"
+                            onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+                            className="w-full py-3 px-4 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+                        >
+                            Login with Google
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>

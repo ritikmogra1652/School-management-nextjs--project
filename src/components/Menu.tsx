@@ -1,3 +1,6 @@
+"use client";
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -117,18 +120,42 @@ const menuItems = [
 ];
 
 const Menu = () => {
+    const router = useRouter();
+
+    const handleLogout = async () => {
+        // Call the next-auth signOut method to log the user out
+        await signOut({ redirect: false }); // Prevent redirect after sign out
+        router.push("/auth/login"); // Redirect to login page manually
+    };
     return (
         <div className="mt-4 text-sm">
             {menuItems.map(i => (
-            <div className="flex flex-col gap-2" key={i.title}>
+                <div className="flex flex-col gap-2" key={i.title}>
                     <span className="hidden lg:block text-gray-400 font-light my-4">{i.title}</span>
-                    {i.items.map(item => (
-                        <Link href={item.href} key={item.label} className="flex items-center justify-center lg:justify-start gap-4 text-gray-500 py-2">
-                            <Image src = {item.icon} alt="" width={20} height={20} />
-                            <span className="hidden lg:block">{item.label}</span>
-                        </Link>
+                    {i.items.map((item) => (
+                        <div
+                            key={item.label}
+                            className="flex items-center justify-center lg:justify-start gap-4 text-gray-500 py-2"
+                        >
+                            {item.label === "Logout" ? (
+                                // Logout item should trigger the handleLogout function
+                                <button
+                                    onClick={handleLogout}
+                                    className="flex items-center gap-4 text-gray-500"
+                                >
+                                    <Image src={item.icon} alt="" width={20} height={20} />
+                                    <span className="hidden lg:block">{item.label}</span>
+                                </button>
+                            ) : (
+                                // For other items, use Link as usual
+                                <Link href={item.href} className="flex items-center gap-4 text-gray-500">
+                                    <Image src={item.icon} alt="" width={20} height={20} />
+                                    <span className="hidden lg:block">{item.label}</span>
+                                </Link>
+                            )}
+                        </div>
                     ))}
-            </div>
+                </div>
             ))}
         </div>
     )

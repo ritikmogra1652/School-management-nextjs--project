@@ -1,22 +1,14 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
+'use client'; 
+import { SessionProvider } from "next-auth/react";
+import './globals.css'; // Make sure the path is correct
 
-const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "School Management Dashboard",
-  description: "Next.js School Management System",
-};
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
+    <SessionProvider>
+      <html lang="en">
+        <body>{children}</body>
+      </html>
+    </SessionProvider>
   );
 }
