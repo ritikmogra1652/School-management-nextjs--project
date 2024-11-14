@@ -5,9 +5,10 @@ import Menu from "@/components/Menu";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import Navbar from "@/components/Navbar";
 
 export default function DashboardLayout({
-    // children,
+    children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
@@ -15,10 +16,9 @@ export default function DashboardLayout({
     const router = useRouter();
 
     useEffect(() => {
-        if (status === "loading") return; // Don't redirect during the loading state
+        if (status === "loading") return; 
 
         if (!session) {
-            // Redirect to login page if not authenticated
             router.push("/auth/login");
         }
     }, [session, status, router]);
@@ -38,7 +38,8 @@ export default function DashboardLayout({
             </div>
             {/* RIGHT */}
             <div className="w-[86%] md:w-[92%] lg:w-[84%] xl:w-[86%] bg-[#F7F8FA] overflow-scroll">
-                r
+                <Navbar />
+                {children}
             </div>
         </div>
     );

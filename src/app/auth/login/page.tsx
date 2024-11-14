@@ -63,7 +63,7 @@ const LoginPage = () => {
                     <div className="mt-4">
                         <button
                             type="button"
-                            onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+                            onClick={() => signIn("google", { callbackUrl: "/dashboard", prompt: "select_account consent" })}
                             className="w-full py-3 px-4 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
                         >
                             Login with Google
