@@ -8,6 +8,8 @@ type LayoutProps = {
 };
 
 const Layout = ({ children }: LayoutProps) => {
+    console.log("sdfhshjdfhjsdhf");
+    
     return (
         <SessionProvider>
             <div className="layout-container">
